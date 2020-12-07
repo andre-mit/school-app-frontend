@@ -2,9 +2,17 @@ import React, { FormEvent, useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth, AuthContext } from '../contexts/auth';
 
-import { TextField, Button } from '@material-ui/core';
+import {
+    TextField,
+    Button,
+    FormControl,
+    IconButton,
+    Input,
+    InputAdornment,
+    InputLabel,
+} from '@material-ui/core';
 
-import { ArrowBack } from '@material-ui/icons';
+import { ArrowBack, Visibility, VisibilityOff } from '@material-ui/icons';
 
 import { Container, Form, Main } from '../styles/pages/Login';
 
@@ -13,6 +21,7 @@ import BookLogo from '../assets/images/book.svg';
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const { login, user, isAuthenticated } = useAuth();
     const router = useRouter();
@@ -29,6 +38,13 @@ const Login: React.FC = () => {
         event.preventDefault();
         await login(email, password);
     }
+
+    const toggleShowPassword = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        event.preventDefault();
+        setShowPassword(!showPassword);
+    };
 
     return (
         <Container>
@@ -51,14 +67,34 @@ const Login: React.FC = () => {
                         onChange={e => setEmail(e.target.value)}
                         type="email"
                     />
-                    <TextField
-                        label="Password"
-                        color="secondary"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        type="password"
-                        autoComplete="on"
-                    />
+                    <FormControl>
+                        <InputLabel className="label" color="secondary">
+                            Password
+                        </InputLabel>
+                        <Input
+                            color="secondary"
+                            required
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            autoComplete="on"
+                            onChange={e => setPassword(e.target.value)}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={toggleShowPassword}
+                                        onMouseDown={e => e.preventDefault()}
+                                    >
+                                        {showPassword ? (
+                                            <Visibility />
+                                        ) : (
+                                            <VisibilityOff />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
                     <Button type="submit" variant="outlined">
                         Login
                     </Button>

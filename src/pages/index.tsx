@@ -1,6 +1,4 @@
-import React from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 
 import { CenterH, Container, Presentation, Search } from '../styles/pages/Home';
 import { useAuth } from '../contexts/auth';
