@@ -37,6 +37,7 @@ interface ContextProps {
 export const AuthContext = createContext({} as ContextProps);
 
 export const AuthProvider: React.FC = ({ children }) => {
+    const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -56,20 +57,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     const login = async (email: string, password: string) => {
         const response = await api.post('auth', { email, password });
         if (response.status === 200) {
-            console.log('Got token');
             const { token, user } = response.data;
             Cookies.set('token', token, { expires: 2 });
             api.defaults.headers.Authorization = `Bearer ${token}`;
             setUser(user);
-            console.log('Got user');
+            await router.push('/');
         }
     };
 
-    const logout = () => {
+    const logout = async (): Promise<void> => {
         Cookies.remove('token');
         setUser(null);
         delete api.defaults.headers.Authorization;
-        window.location.pathname = '/';
+        await router.push('/');
     };
 
     return (
