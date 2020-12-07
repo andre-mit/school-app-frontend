@@ -5,8 +5,7 @@ const About: React.FC = () => {
     const { user } = useAuth();
     return (
         <main>
-            <h4>Nome: {user.name}</h4>
-            <b>Email: {user.email}</b>
+            <h1>About</h1>
         </main>
     );
 };
