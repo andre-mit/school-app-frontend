@@ -95,7 +95,7 @@ const Login: React.FC = () => {
                             }
                         />
                     </FormControl>
-                    <Button type="submit" variant="outlined">
+                    <Button type="submit" color="primary" variant="contained">
                         Login
                     </Button>
                 </Form>
